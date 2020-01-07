@@ -1,4 +1,4 @@
-const firebaseConfig = {
+let firebaseConfig = {
   apiKey: 'AIzaSyBdQLw1hmincv9Ry3coO9szJkvma8GI4gE',
   authDomain: 'blog-image-storage.firebaseapp.com',
   databaseURL: 'https://blog-image-storage.firebaseio.com',
@@ -15,7 +15,26 @@ const fileStatus = document.querySelector('.fileStatus');
 const imageUrl = document.querySelector('#imageUrl');
 const uploadImg = document.querySelector('#uploadImg');
 const copyBtn = document.querySelector('#copyBtn');
+const loginBtn = document.querySelector('#loginBtn');
 let file;
+const signOut = document.querySelector('#signOut');
+
+signOut.addEventListener('click', () => {
+  firebase
+    .auth()
+    .signOut()
+    .then(function(e) {
+      console.log(e);
+    })
+    .catch(function(error) {
+      console.log(e);
+    });
+});
+
+loginBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  loginCheckout();
+});
 
 selectBtn.addEventListener('change', (e) => {
   file = e.target.files[0];
@@ -25,7 +44,7 @@ selectBtn.addEventListener('change', (e) => {
 upload.addEventListener('click', (e) => {
   e.preventDefault();
   let nowTime = dateTime();
-  const storageRef = storage.ref(`blog/${nowTime}-${file.name}`);
+  const storageRef = storage.ref(`blog/${'Ia5NUqqhCWVFoYeV8CbKsyGfsFy2'}/${nowTime}-${file.name}`);
   storageRef
     .put(file)
     .then((e) => {
@@ -56,3 +75,32 @@ function dateTime() {
   }${date.getDate()}`;
   return now;
 }
+
+function loginCheckout() {
+  let email = 'test1234@gmail.com';
+  let password = '75395100';
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then((e) => {
+      console.log(e);
+    })
+    .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+}
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user != null) {
+    console.log(user);
+  } else {
+    console.log(user);
+  }
+});
+
+// var user = firebase.auth().currentUser;
+// console.log(user);
